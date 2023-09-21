@@ -51,13 +51,14 @@ resource "aws_route_table" "project-rt" {
   }
 }
 
- # Create a route table association
+ # Create a route table association for public subnets
 resource "aws_route_table_association" "route-public_subnets" {
   subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.project-rt.id
   count = 3
 }
 
+# Create a elastic ip
 resource "aws_eip" "project-eip" {
   vpc = true
 
