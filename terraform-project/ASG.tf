@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "target-group" {
   protocol = "HTTP"
   target_type = "instance"
   vpc_id   = aws_vpc.project-terraform.id 
-}
+
 
   health_check {
     path                = "/"
@@ -29,7 +29,8 @@ resource "aws_lb_target_group" "target-group" {
     protocol            = "HTTP"
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    check_interval_sec  = 10
-    timeout_sec         = 5
+    interval            = 10
+    timeout             = 5
     matcher             = "200"
   }
+}
