@@ -39,7 +39,7 @@ resource "aws_internet_gateway" "project-igw" {
   }
 }
 
- # Create a route table internet gateway
+ # Create a route table for internet gateway
 resource "aws_route_table" "project-rt" {
   vpc_id = aws_vpc.project-terraform.id
     route {
@@ -56,6 +56,37 @@ resource "aws_route_table_association" "route-public_subnets" {
   subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.project-rt.id
   count = 3
+}
+
+resource "aws_eip" "project-eip" {
+  vpc = true
+
+  tags = {
+    Name = "project-eip"
+  }
+}
+
+ # Create a nat-gateway
+resource "aws_nat_gateway" "project-nat-gateway" {
+  allocation_id     = aws_eip.project-eip.id
+  subnet_id         = aws_subnet.public_subnets[0].id
+  depends_on        = [aws_internet_gateway.project-igw]
+  
+   tags = {
+    Name = "project-nat-gateway"
+  }
+}
+
+# Create a route table for nat gateway
+resource "aws_route_table" "project-rt2" {
+  vpc_id = aws_vpc.project-terraform.id
+    route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.project-nat-gateway.id
+  }
+  tags = {
+    Name = "project-rt2"
+  }
 }
 
 
