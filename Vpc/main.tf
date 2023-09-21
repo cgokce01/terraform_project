@@ -30,4 +30,12 @@ resource "aws_subnet" "private_subnets"{
     }
 }
 
+# Create a internet-gateway
+resource "aws_internet_gateway" "project-igw" {
+  vpc_id = aws_vpc.project-terraform.id
+  
+  tags = {
+    name = "project-igw"
+  }
+}
 
