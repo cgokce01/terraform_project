@@ -4,6 +4,13 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "vpc_cidr_block" {
+  description = "please provide a CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+
 variable "cidr_block" {
   description = "please provide a cidr_block information"
   type        = list(string)
