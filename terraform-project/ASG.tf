@@ -47,8 +47,18 @@ resource "aws_lb_listener" "lb-listener" {
   }
 }
 
-resource "aws_key_pair" "project" {
-  key_name   = "project"
-  public_key = file("~/path_to_save_key/project.pub")
+resource "aws_instance" "instances" {
+  ami           = "ami-00c6177f250e07ec1"
+  instance_type = "t2.micro"
+  key_name = "project"
+  subnet_id = aws_subnet.public_subnets[count.index].id
+  vpc_security_group_ids = [aws_security_group.project-sg]
+  type        = list(string)
+  associate_public_ip_address = true
+  count = 3
+
+  tags = {
+    Name = "WebServer"
+  }
 }
 
