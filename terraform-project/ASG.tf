@@ -47,6 +47,12 @@ resource "aws_lb_listener" "lb-listener" {
   }
 }
 
+resource "aws_key_pair" "project_keypair" {
+  key_name   = "project_keypair"
+  public_key = file(var.public_key)
+}
+
+
 resource "aws_instance" "instances" {
   ami           = "ami-00c6177f250e07ec1"
   instance_type = "t2.micro"

@@ -34,3 +34,9 @@ variable "ami_id" {
   description = "AMI ID for the instances"
   default     = "ami-00c6177f250e07ec1"
 }
+
+variable "public_key" {
+  description = "public key location on terraform instance"
+  type        = string
+  default     = "/home/ec2-user/.ssh/id_rsa.pub"
+}
