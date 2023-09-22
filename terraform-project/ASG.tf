@@ -75,6 +75,12 @@ resource "aws_instance" "instances" {
   }
 
 
+resource "aws_instance" "wordpress" {
+  ami           = "ami-00c6177f250e07ec1"
+  instance_type = "t2.micro"
+  key_name = "project_keypair"
+
+
   user_data = <<-EOF
               #!/bin/bash
               sudo yum update -y
@@ -82,7 +88,7 @@ resource "aws_instance" "instances" {
               sudo systemctl start httpd
               sudo systemctl enable httpd
               sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
-              sudo  cd /var/www/html
+              cd /var/www/html
               sudo wget https://wordpress.org/latest.tar.gz
               sudo tar -xzf latest.tar.gz
               sudo cp -R wordpress/* /var/www/html/
@@ -93,5 +99,8 @@ resource "aws_instance" "instances" {
   tags = {
     Name = "WordPress"
   }
+}
+
+  
 
 
