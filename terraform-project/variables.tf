@@ -46,3 +46,9 @@ variable "private_key" {
   type        = string
   default     = "/home/ec2-user/.ssh/id_rsa"
 }
+
+variable "instance_username" {
+  description = "user to ssh to remote host"
+  type        = string
+  default     = "ec2-user"
+}

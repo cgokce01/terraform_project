@@ -69,7 +69,7 @@ resource "aws_instance" "instances" {
 
   connection {
     type        = "ssh"
-    user        = "ec2_user"
+    user        = var.instance_username
     private_key = "${file("var.private_key")}"
     host        = aws_instance.wordpress.public_ip
   }
@@ -93,6 +93,7 @@ resource "aws_instance" "wordpress" {
               sudo tar -xzf latest.tar.gz
               sudo cp -R wordpress/* /var/www/html/
               sudo chown -R apache:apache /var/www/html/
+              sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
               sudo systemctl restart httpd
               EOF
 
