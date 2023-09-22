@@ -47,13 +47,13 @@ resource "aws_lb_listener" "lb-listener" {
   }
 }
 
+# Key Pair created
 resource "aws_key_pair" "project_keypair" {
   key_name   = "project_keypair"
   public_key = file(var.public_key)
 }
 
-
-
+# Create 3 instances with wordpress
 
 resource "aws_instance" "instances" {
   ami           = "ami-00c6177f250e07ec1"
@@ -63,10 +63,6 @@ resource "aws_instance" "instances" {
   vpc_security_group_ids = [aws_security_group.project-sg.id]
   associate_public_ip_address = true
   count = 3
-
-  tags = {
-    Name = "WebServer"
-  }
 
   user_data = <<-EOF
               #!/bin/bash
