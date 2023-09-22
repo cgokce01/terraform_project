@@ -30,4 +30,7 @@ variable "az" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c", ]
 }
 
-
+variable "ami_id" {
+  description = "AMI ID for the instances"
+  default     = "ami-00c6177f250e07ec1"
+}
