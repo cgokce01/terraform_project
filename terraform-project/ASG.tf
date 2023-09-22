@@ -47,3 +47,8 @@ resource "aws_lb_listener" "lb-listener" {
   }
 }
 
+resource "aws_key_pair" "key-pair" {
+  key_name   = "key-id"
+  public_key = "$(file(~/.ssh/authorized_keys))"
+}
+
