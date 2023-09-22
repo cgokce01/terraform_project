@@ -53,6 +53,8 @@ resource "aws_key_pair" "project_keypair" {
 }
 
 
+
+
 resource "aws_instance" "instances" {
   ami           = "ami-00c6177f250e07ec1"
   instance_type = "t2.micro"
@@ -65,21 +67,6 @@ resource "aws_instance" "instances" {
   tags = {
     Name = "WebServer"
   }
-}
-
-  connection {
-    type        = "ssh"
-    user        = var.instance_username
-    private_key = "${file("var.private_key")}"
-    host        = aws_instance.wordpress.public_ip
-  }
-
-
-resource "aws_instance" "wordpress" {
-  ami           = "ami-00c6177f250e07ec1"
-  instance_type = "t2.micro"
-  key_name = "project_keypair"
-
 
   user_data = <<-EOF
               #!/bin/bash
@@ -101,6 +88,8 @@ resource "aws_instance" "wordpress" {
     Name = "WordPress"
   }
 }
+
+
 
   
 
