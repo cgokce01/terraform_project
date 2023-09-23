@@ -93,7 +93,7 @@ provisioner "file" {
       type        = "ssh"
       user        = var.instance_username
       private_key = file(var.private_key)
-      host        = aws_instance.wordpress.public_ip
+      host        = aws_instance.instances.public_ip
   }
 }
 
@@ -104,3 +104,5 @@ resource "aws_lb_target_group_attachment" "tg-attachment" {
   port             = 80
   count = 3
 }
+
+  
