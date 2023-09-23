@@ -64,6 +64,7 @@ resource "aws_instance" "instances" {
   associate_public_ip_address = true
   count = 3
 
+
   user_data = <<-EOF
               #!/bin/bash
               sudo yum update -y
@@ -76,7 +77,6 @@ resource "aws_instance" "instances" {
               sudo tar -xzf latest.tar.gz
               sudo cp -R wordpress/* /var/www/html/
               sudo chown -R apache:apache /var/www/html/
-              sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
               sudo systemctl restart httpd
               EOF
 
@@ -85,8 +85,14 @@ resource "aws_instance" "instances" {
   }
 }
 
+  provisioner "file" {
+    source      = "some/local/file"
+    destination = "/tmp/some/file/on/the/instance"
 
-
-  
-
-
+    connection {
+      type        = "ssh"
+      user        = var.instance_username
+      private_key = file(var.private_key)
+      host        = aws_instance.wordpress.public_ip
+  }
+}
