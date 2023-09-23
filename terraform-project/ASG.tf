@@ -53,6 +53,11 @@ resource "aws_key_pair" "project_keypair" {
   public_key = file(var.public_key)
 }
 
+resource "aws_ami_from_instance" "wordpress" {
+  name               = "terraform-wordpress"
+  source_instance_id = aws_instance.wordpress.id
+}
+
 # Create 3 instances with wordpress
 
 resource "aws_instance" "instances" {
