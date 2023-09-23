@@ -83,11 +83,6 @@ resource "aws_instance" "instances" {
   tags = {
     Name = "WordPress"
   }
-}
-
-  provisioner "file" {
-    source      = "some/local/file"
-    destination = "/tmp/some/file/on/the/instance"
 
     connection {
       type        = "ssh"
