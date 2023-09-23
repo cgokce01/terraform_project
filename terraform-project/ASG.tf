@@ -53,10 +53,6 @@ resource "aws_key_pair" "project_keypair" {
   public_key = file(var.public_key)
 }
 
-resource "aws_ami_from_instance" "wordpress" {
-  name               = "terraform-wordpress"
-  source_instance_id = aws_instance.wordpress.id
-}
 
 # Create 3 instances with wordpress
 
@@ -99,4 +95,12 @@ provisioner "file" {
       private_key = file(var.private_key)
       host        = aws_instance.wordpress.public_ip
   }
+}
+
+# Target group attachment
+resource "aws_lb_target_group_attachment" "tg-attachment" {
+  target_group_arn = aws_lb_target_grou.target-group.arn
+  target_id        = aws_instance.instances[count.index].id
+  port             = 80
+  count = 3
 }
