@@ -56,15 +56,13 @@ resource "aws_key_pair" "project_keypair" {
 
 # Create 3 instances with wordpress
 
-resource "aws_instance" "instances" {
+resource "aws_instance" "WordPress" {
   ami           = "ami-00c6177f250e07ec1"
   instance_type = "t2.micro"
   key_name = "project_keypair"
   subnet_id = aws_subnet.public_subnets[count.index].id
   vpc_security_group_ids = [aws_security_group.project-sg.id]
   associate_public_ip_address = true
-  count = 3
-
 
   user_data = <<-EOF
               #!/bin/bash
@@ -93,14 +91,14 @@ provisioner "file" {
       type        = "ssh"
       user        = var.instance_username
       private_key = file(var.private_key)
-      host        = aws_instance.instances[count.index].public_ip
+      host        = aws_instance.WordPress.public_ip
   }
 }
 
 # Target group attachment
 resource "aws_lb_target_group_attachment" "tg-attachment" {
   target_group_arn = aws_lb_target_group.target-group.arn
-  target_id        = aws_instance.instances[count.index].id
+  target_id        = aws_instance.WordPress.id
   port             = 80
   count = 3
 }
