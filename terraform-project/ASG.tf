@@ -84,6 +84,10 @@ resource "aws_instance" "instances" {
     Name = "WordPress"
   }
 
+provisioner "file" {
+  source = ".project_keypair.pem"
+  destination = "/home/instance_username/project_keypair.pem"
+}
     connection {
       type        = "ssh"
       user        = var.instance_username
