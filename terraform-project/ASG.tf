@@ -92,6 +92,7 @@ resource "aws_instance" "WordPress" {
   }
 
   }
+
 # Target group attachment
 resource "aws_lb_target_group_attachment" "tg-attachment" {
   target_group_arn = aws_lb_target_group.target-group.arn
@@ -99,4 +100,23 @@ resource "aws_lb_target_group_attachment" "tg-attachment" {
   port             = 80
 }
 
+# creating a launch template
+resource "aws_launch_template" "launch_template" {
+
+  name          = "launch_template"
+  image_id      ="ami-00c6177f250e07ec1"
+  instance_type = "t2.micro"
+  key_name      = aws_key_pair.project_keypair.id
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.project-sg.id]
+  }
+}
+
+resource "aws_route53_record" "wordpress" {
+  zone_id = var.hosted-zone-id
+  name    = "wordpress.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = 300
+}
   

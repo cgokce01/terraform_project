@@ -52,3 +52,15 @@ variable "instance_username" {
   type        = string
   default     = "ec2-user"
 }
+
+variable "hosted-zone-id" {
+  description = "provide the zone id"
+  type = string
+  default = "Z0835897267AK4RJ42B1S"
+  
+}
+variable "domain-name" {
+  description = "provide the  doamin name"
+  type = string
+  default = "cabinetladystudio.com"
+}
