@@ -93,13 +93,13 @@ provisioner "file" {
       type        = "ssh"
       user        = var.instance_username
       private_key = file(var.private_key)
-      host        = aws_instance.instances.public_ip
+      host        = aws_instance.instances[count.index].public_ip
   }
 }
 
 # Target group attachment
 resource "aws_lb_target_group_attachment" "tg-attachment" {
-  target_group_arn = aws_lb_target_grou.target-group.arn
+  target_group_arn = aws_lb_target_group.target-group.arn
   target_id        = aws_instance.instances[count.index].id
   port             = 80
   count = 3
