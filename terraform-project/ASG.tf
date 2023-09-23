@@ -60,7 +60,7 @@ resource "aws_instance" "WordPress" {
   ami           = "ami-00c6177f250e07ec1"
   instance_type = "t2.micro"
   key_name = "project_keypair"
-  subnet_id = aws_subnet.public_subnets[count.index].id
+  subnet_id = aws_subnet.public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.project-sg.id]
   associate_public_ip_address = true
 
@@ -83,18 +83,15 @@ resource "aws_instance" "WordPress" {
     Name = "WordPress"
   }
 
-provisioner "file" {
-  source = ".project_keypair.pem"
-  destination = "/home/instance_username/project_keypair.pem"
-}
+
     connection {
       type        = "ssh"
       user        = var.instance_username
       private_key = file(var.private_key)
       host        = aws_instance.WordPress.public_ip
   }
-}
 
+  }
 # Target group attachment
 resource "aws_lb_target_group_attachment" "tg-attachment" {
   target_group_arn = aws_lb_target_group.target-group.arn
