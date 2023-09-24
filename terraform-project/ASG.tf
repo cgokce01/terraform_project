@@ -113,6 +113,7 @@ resource "aws_launch_template" "launch_template" {
   }
 }
 
+#Create a route 53
 resource "aws_route53_record" "wordpress" {
   zone_id = var.hosted-zone-id
   name    = "wordpress.${var.domain-name}"
@@ -121,3 +122,17 @@ resource "aws_route53_record" "wordpress" {
   records = [ aws_lb.load-balancer.dns_name ]
 }
   
+# create a file system
+resource "aws_efs_file_system" "efs-project" {
+  creation_token = "my-efs"
+
+  tags = {
+    Name = "efs-project"
+  }
+}
+
+resource "aws_efs_mount_target" "mount-project" {
+  file_system_id = aws_efs_file_system.efs-project.id
+  subnet_id      = aws_subnet.public_subnets[0].id
+}
+
