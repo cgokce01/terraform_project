@@ -24,14 +24,13 @@ resource "aws_lb_target_group" "target-group" {
 
 
   health_check {
-    path                = "/"
     port                = 80
     protocol            = "HTTP"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     interval            = 10
     timeout             = 5
-    matcher             = "200"
+   
   }
 } 
 
