@@ -64,3 +64,4 @@ variable "domain-name" {
   type = string
   default = "cabinetladystudio.com"
 }
+
