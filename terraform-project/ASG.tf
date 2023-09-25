@@ -136,3 +136,42 @@ resource "aws_efs_mount_target" "mount-project" {
   subnet_id      = aws_subnet.public_subnets[0].id
 }
 
+resource "aws_autoscaling_group" "project-asg" {
+  name                      = "project-asg"
+  max_size                  = 99
+  min_size                  = 1
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  desired_capacity          = 1
+  target_group_arns   = [aws_lb_target_group.target-group.arn]
+  vpc_zone_identifier       =  [aws_subnet.public_subnets[count.index].id]
+    launch_template {
+    id      = aws_launch_template.launch_template.id
+    version = "$Latest"
+  }
+
+    tag {
+    key                 = "Name"
+    value               = "asginstance"
+    propagate_at_launch = true
+  }
+
+}
+
+resource "aws_autoscaling_policy" "scale_up" {
+  name                   = "scale_up"
+  policy_type            = "SimpleScaling"
+  autoscaling_group_name =aws_autoscaling_group.project-asg.name
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = "1"   # add one instance
+  cooldown               = "300" # cooldown period after scaling
+}
+
+resource "aws_autoscaling_policy" "scale_down" {
+  name                   = "asg-scale-down"
+  autoscaling_group_name = aws_autoscaling_group.project-asg.name
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = "-1"
+  cooldown               = "300"
+  policy_type            = "SimpleScaling"
+}
