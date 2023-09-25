@@ -65,3 +65,29 @@ variable "domain-name" {
   default = "cabinetladystudio.com"
 }
 
+variable "cluster_identifier" {
+  description = "Provide the cluster identifier for database"
+  type = string
+  default = "mydatabase1"
+  
+}
+
+variable "database_name" {
+  description = "name of rds database"
+  type = string
+  default = "my_database"
+  
+}
+
+variable "master_username" {
+  description = "Provide the username"
+  type = string
+  default = "team1"
+}
+
+variable "master_password" {
+  description = "provide password for master username"
+  type = string
+  default = "ohyeswedidit:)"
+  
+}
