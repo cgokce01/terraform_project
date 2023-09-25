@@ -144,7 +144,7 @@ resource "aws_autoscaling_group" "project-asg" {
   health_check_type         = "ELB"
   desired_capacity          = 1
   target_group_arns   = [aws_lb_target_group.target-group.arn]
-  vpc_zone_identifier       =  [aws_subnet.public_subnets[count.index].id]
+  vpc_zone_identifier       =  [aws_subnet.public_subnets[0].id, aws_subnet.public_subnets[1].id, aws_subnet.public_subnets[2].id]
     launch_template {
     id      = aws_launch_template.launch_template.id
     version = "$Latest"
