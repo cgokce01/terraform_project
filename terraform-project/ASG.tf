@@ -24,15 +24,17 @@ resource "aws_lb_target_group" "target-group" {
 
 
   health_check {
-    port                = 80
+    interval            = 30
     protocol            = "HTTP"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    interval            = 10
+    port                = 80
     timeout             = 5
-   
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    matcher             = 200
+
   }
-} 
+}
+
 
 ## Create a lb listener
 resource "aws_lb_listener" "lb-listener" {
